@@ -1,0 +1,34 @@
+BOZZA, QUELLO AGGIORNATO L HO PERSO
+@startuml
+!theme aws-orange
+actor User
+participant App
+participant GATTServer as "COAP Server"
+participant API
+
+User -> App: clicks "Install widget"
+activate App
+
+App -> GATTServer: BLE request with widget ID
+activate GATTServer
+
+GATTServer -> API: Download widget
+activate API
+
+API -> GATTServer: Widget data
+deactivate API
+
+GATTServer -> Database: Update database
+activate Database
+deactivate Database
+
+GATTServer -> FileSystem: Update file system
+activate FileSystem
+deactivate FileSystem
+
+GATTServer -> App: Acknowledge update
+deactivate GATTServer
+
+App -> User: Widget installed
+deactivate App
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+class Drawable {
+  - int xPos
+  - int yPos
+  - int width
+  - int height
+  - bool visible
+  + moveTo(x, y)
+  + translate(dx, dy)
+  + animateTo(x, y, duration)
+  + show()
+  + hide()
+  + isVisible(): bool
+}
+
+class ColoredDrawable {
+  - Color color
+  + setColor(color)
+}
+
+class DrawableCanvas {
+  + setSize(width, height)
+  + setPixel(x, y)
+  + clear()
+  + clone()
+  + fill(color)
+}
+
+class DrawableShape {
+}
+
+class DrawableText {
+  + setText(text)
+  + setFont(font)
+}
+
+class DrawableRectangle {
+  + setSize(width, height)
+}
+
+class DrawableCircle {
+  + setRadius(radius)
+  + setCenter(x, y)
+}
+
+class DrawablePPM {
+  + setImage(image)
+  + flipVertically()
+  + flipHorizontally()
+}
+
+Drawable <|-- ColoredDrawable
+Drawable <|-- DrawableCanvas
+Drawable <|-- DrawablePPM
+
+ColoredDrawable <|-- DrawableShape
+ColoredDrawable <|-- DrawableText
+
+DrawableShape <|-- DrawableRectangle
+DrawableShape <|-- DrawableCircle
+@enduml

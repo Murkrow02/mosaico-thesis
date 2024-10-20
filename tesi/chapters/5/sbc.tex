@@ -1,0 +1,43 @@
+
+The most critical decision was selecting the processing unit,
+and I realized that I needed a single-board computer (SBC) with the following
+characteristics:
+
+\begin{itemize}
+	\item Sufficient computational power for handling both graphical rendering and networking operations
+
+	\item Broad connectivity options, such as WiFi, Bluetooth, and GPIO pins for
+		external peripherals
+
+	\item Cost-effective, as affordability was a primary concern
+
+	\item Highly customizable, to allow flexible development and integration with
+		other components
+\end{itemize}
+
+Initially, I considered two options: the \textbf{Raspberry Pi} and the \textbf{ESP32}, both
+equipped with built-in Bluetooth and WiFi. The ESP32 is a fantastic microcontroller, known for its low power consumption and versatility in IoT applications. It's gaining immense popularity due to its ultra-low cost—priced as low as 5 euros—yet powerful enough to build impressive and innovative projects.
+However,
+after evaluating my project’s requirements, I opted for the Raspberry Pi Zero W due
+to its Linux support, which I believed would provide better flexibility and
+facilitate more advanced functionalities, such as running a full operating system,
+handling networking tasks, and interacting with various software libraries.
+
+I chose the Raspberry Pi Zero W for several reasons:
+\begin{itemize}
+	\item \textbf{Operating System Support:} With a lightweight, CLI only Linux-based OS like \href{https://dietpi.com/}{DietPi}, I could leverage a vast ecosystem of software tools and libraries,
+		enabling more complex operations that would be harder to achieve on a
+		microcontroller like the ESP32.
+
+	\item \textbf{Connectivity:} The Raspberry Pi Zero W comes with built-in WiFi
+		and Bluetooth, making it ideal for connecting to the internet and integrating
+		with other wireless devices.
+
+	\item \textbf{Size and Power Consumption:} Despite being a fully capable
+		computer, the Raspberry Pi Zero W is compact and consumes minimal power,
+		which was important for keeping the hardware cost-effective and portable.
+
+	\item \textbf{GPIO Pins:} The GPIO pins offer a wide range of possibilities
+		for connecting sensors, LEDs, and other hardware components, making it easy to
+		extend the platform with additional functionality.
+\end{itemize}

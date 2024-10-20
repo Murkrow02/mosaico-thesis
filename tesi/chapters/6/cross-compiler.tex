@@ -1,0 +1,7 @@
+One of the more challenging aspects of developing a complex C++ application is the creation of a makefile that accurately links all required modules and libraries. This challenge becomes even more pronounced when targeting a different architecture, as in the case of compiling for the ARMv6 CPU of the Raspberry Pi Zero W.
+
+Compiling directly on the Raspberry Pi proved impractical, as each compilation took between 10 to 20 minutes to generate an executable—an unacceptable delay for iterative development. 
+
+After extensive experimentation, I successfully identified a working cross-compilation toolchain tailored to the ARMv6 architecture \footnote{\url{https://github.com/tttapa/docker-arm-cross-toolchain/}}. This discovery significantly optimized the build process, reducing compile times to less than a minute. To streamline the development workflow, I created a Bash script that automates the compilation, establishes an \textit{SSH} connection to the Raspberry Pi, and uses \textit{rclone} to swiftly transfer the build artifacts to the device before launching the application.
+
+Though this setup took considerable time to establish, it drastically accelerated the development process, allowing for rapid testing and debugging on the Raspberry Pi.

@@ -1,0 +1,15 @@
+One of the main challenges in developing the software was selecting the right programming language. As mentioned previously$^{\ref{software-objectives}}$, I needed the software to be both high-performing and flexible. A compiled language was essential, as a scripting language wouldn’t be able to handle the rendering of complex widgets, especially when trying to push the limited power of the Raspberry Pi to its limits. This led to the immediate exclusion of languages like Python and JavaScript. Although C and C++ were obvious choices due to their efficiency, I initially sought something more modern and sophisticated. However, after some experimentation, I found that the .NET runtime wasn’t suitable for the Pi, and alternatives like Java and Rust didn’t provide the same performance gains I achieved with C++ that in the end emerged as the best option.
+
+\section{C++ Module}
+\input{tesi/chapters/6/c++}
+\newpage
+\section{Python Module}
+\input{tesi/chapters/6/python}
+\newpage
+\section{Cross Compiler}
+\input{tesi/chapters/6/cross-compiler}
+\newpage
+\section{Simulators}
+\label{simulators}
+\input{tesi/chapters/6/simulator}
+

@@ -1,0 +1,57 @@
+When developing an IoT project, selecting an appropriate networking stack is a crucial design consideration. In the case of Mosaico, this choice is particularly significant due to the system's diverse components and their interactions. It is essential to evaluate communication protocols carefully to achieve an optimal balance among performance requirements such as speed, resource efficiency, and functionality while considering the limitations imposed by the hardware and specific use cases. Each layer of the networking stack fulfills a distinct role, and a well-structured combination of protocols is necessary to ensure that the system operates efficiently and remains scalable over time.
+
+\subsection{Constrained Application Protocol (COAP)}
+
+The primary communication protocol used in Mosaico between the mobile application and the Raspberry Pi is the Constrained Application Protocol \cite{rfc7252} (COAP). COAP is an Internet Engineering Task Force (IETF) standard designed explicitly for constrained devices in IoT environments, and it proved to be a more suitable alternative to previously considered options like raw TCP sockets and REST-based servers.
+
+Initially, the project employed a basic TCP socket for communication, providing low-level control over data transfer between the mobile app and the Raspberry Pi. While TCP sockets offer the advantage of simplicity and direct control, they lack the higher-level abstractions and features that are essential for a scalable and maintainable architecture. Communication over raw sockets quickly became cumbersome and error-prone due to the absence of structured methods for defining request/response patterns, error handling, and state management.
+
+In an attempt to overcome these limitations, the next iteration of the project moved towards implementing a traditional REST server on the Raspberry Pi. REST, based on HTTP, is a well-established protocol that provides an organized method for communication through well-defined endpoints using methods like GET, POST, PUT, and DELETE. It allowed for more structured interaction between the mobile app and the Raspberry Pi, introducing features like query parameters, headers, and status codes. However, while REST is robust, it is also relatively resource-heavy. Running a fully-fledged REST server on the Raspberry Pi, a resource-constrained device, proved to be overkill for the application’s needs. The overhead of managing HTTP headers, complex request/response formats, and other RESTful conventions unnecessarily taxed the Raspberry Pi’s limited processing power and memory.
+
+The inefficiency of using REST on constrained hardware prompted a deeper exploration of alternatives, leading to the introduction of COAP, a protocol tailored for constrained environments. My supervisor suggested COAP as a middle ground between the simplicity of raw TCP and the complexity of REST, and it has since become the core protocol for communication in Mosaico.
+
+COAP is a specialized web transfer protocol designed for use in IoT environments, offering a much lighter alternative to REST while retaining many of its familiar semantics. COAP follows the same request-response model as REST, supporting methods like GET, POST, PUT, and DELETE, and allows for interaction with endpoints using URIs. However, COAP significantly reduces the protocol overhead by employing a binary message format instead of the text-based HTTP. Additionally, COAP runs over UDP instead of TCP, making it more lightweight and responsive, especially in scenarios where reliable packet delivery is not critical for every message.
+
+In practical terms, COAP provided Mosaico with a streamlined and efficient communication stack that did not impose the same processing and memory overheads as HTTP-based REST. It offered the right balance between simplicity and structure, making it a perfect fit for the constrained environment of the Raspberry Pi. Moreover, COAP allows arbitrary payloads to be transmitted, enabling flexible communication patterns between the mobile app and the Raspberry Pi without introducing unnecessary complexity.
+
+
+\subsection{Bluetooth Low Energy (BLE)}
+
+While COAP forms the backbone of the communication between the mobile app and the Raspberry Pi, it relies on an IP-based protocol, which necessitates that the Raspberry Pi be connected to a network and that its IP address is known to the app. However, in practical scenarios, especially during initial setup, the Raspberry Pi may not yet be connected to the internet or assigned an IP address. This posed a critical challenge in ensuring a seamless and intuitive setup experience.
+
+At first, I considered two potential solutions: 
+
+\begin{enumerate}
+    \item Configure the Raspberry Pi as a WiFi access point, allowing the mobile app to communicate directly with it via a local connection.
+    \item Utilize a different communication method that does not rely on a router or existing network connection.
+\end{enumerate}
+The first approach, while feasible, was discarded because setting up the Raspberry Pi as a WiFi access point seemed somewhat convoluted and less elegant. Instead, I chose to implement a Bluetooth Low Energy (BLE) solution, which offered a more straightforward and reliable way to handle the initial setup without requiring any pre-existing network configuration.
+
+In this BLE-based approach, the Raspberry Pi operates a GATT (Generic Attribute Profile) server alongside the COAP server. The BLE server is primarily responsible for three main tasks:
+
+\begin{enumerate}
+    \item \textbf{Discovery}:The BLE server advertises a service that the mobile app can detect during a BLE scan. This allows the app to discover the nearby Raspberry Pi without needing its IP address or requiring internet connectivity.
+    \item \textbf{Wi-Fi Configuration}: Once connected via BLE, the mobile app can send Wi-Fi credentials (SSID and password) to the Raspberry Pi, allowing it to join a network. This eliminates the need for manual configuration, simplifying the setup process significantly.
+    \item \textbf{IP Address Retrieval}: After the Raspberry Pi connects to the network, the mobile app can request the local IP address through BLE. The Pi responds with its IP, enabling the app to switch over to COAP for further communication.
+\end{enumerate}
+This BLE implementation was a game-changer in the Mosaico setup process, allowing users to quickly and easily connect the Raspberry Pi to their local network without needing to interface with routers or manually configure network settings. BLE's low power and short-range capabilities made it ideal for this purpose, offering a seamless handoff to COAP once the network connection was established.
+
+This approach demonstrates how BLE can complement IP-based protocols like COAP in IoT environments by handling the initial device discovery and configuration stages, creating a more user-friendly and efficient setup experience.
+
+\subsection{GIT Integration for Widget Management}
+
+One of the core principles behind Mosaico is maintaining openness and accessibility within the ecosystem. To ensure that all community-contributed widgets remain open source—and to also minimize storage demands on the Mosaico server—the download and distribution of widgets from the app store to the Raspberry Pi is handled via public GIT repositories.
+
+When developers create a widget, they can link their repository directly to the widget's entry on the Mosaico developer dashboard. This means that users downloading the widget from the app store are pulling the most up-to-date version directly from the developer’s public GIT repository.
+
+This method not only promotes transparency by allowing anyone to browse the widget’s source code but also simplifies maintenance for developers. When they push new updates to their repository, the changes are automatically reflected in the app store, allowing users to seamlessly update their installed widgets.
+
+By leveraging GIT, Mosaico fosters a collaborative, open-source environment where the community can share, improve, and build on each other’s work with minimal friction.
+
+\subsection{REST}
+
+The REST protocol is another key component utilized in Mosaico, primarily for communication between the mobile app and the Mosaico store API. As a widely-adopted protocol, REST is an ideal choice for exchanging structured data in a lightweight format like JSON. This ensures compatibility and ease of integration between different components of the Mosaico ecosystem.
+
+On the mobile app side, REST facilitates smooth interactions with the app store, allowing users to browse, search for, and manage widgets. REST also serves the Raspberry Pi software when a user installs a new widget. When an installation request is made, the Pi retrieves essential information—such as the GIT repository URL where the widget’s source code is hosted and other relevant metadata—via the REST API. This data is then stored in a local indexed database for future use, ensuring that Mosaico remains responsive even when offline.
+
+The decision to use REST here is guided by the need for a reliable, feature-rich, yet easy-to-use communication protocol. This setup allows Mosaico to seamlessly integrate the app store with the Raspberry Pi, offering a smooth experience for both developers and end users.

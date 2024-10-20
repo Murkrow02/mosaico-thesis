@@ -1,0 +1,261 @@
+\documentclass[12pt,a4paper,twoside]{book}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,inner=3.5cm,outer=2.5cm]{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[titletoc,title,toc,page]{appendix}
+\usepackage{verbatim}
+\usepackage{placeins}
+\usepackage{amsmath} 
+\usepackage{float}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage{tikz}
+\usepackage{parskip}
+\usepackage{minted}
+\setminted{fontsize=\small,baselinestretch=1}
+\usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{chngcntr}
+\counterwithin{table}{chapter}
+
+\usepackage{newlfont}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+\usepackage{soul}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+
+\usepackage{multirow}
+\usepackage{hyphenat}
+
+\usepackage{lscape} 
+
+\usepackage{natbib}
+\bibliographystyle{alpha}
+\setcitestyle{super,open={[},close={]}}
+
+\newcommand{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\usepackage{pdfpages}
+
+\begin{document}
+% Per spostare i vari elementi più su o più giù gioca con i valori di vspace che ci sono tra uno e l'altro
+\pagestyle{empty}
+\newgeometry{left=2cm, right=2cm}
+\begin{titlepage}
+\begin{center}
+    {{\Large{\textsc{Alma Mater Studiorum $\cdot$ Università di Bologna}}}}
+    \rule[0.1cm]{\textwidth}{0.1mm}
+    \rule[0.5cm]{\textwidth}{0.6mm}\\
+    {\small{\bf SCUOLA DI SCIENZE\\
+    Corso di Laurea in Informatica}}
+\end{center}
+
+\vspace{25mm}
+
+\begin{center}
+    {\LARGE{\bf Developing a Smart and Customizable  }}\\
+    \vspace{3mm}
+    {\LARGE{\bf LED Matrix Platform:}}\\
+    \vspace{3mm}
+    {\LARGE{\bf The Mosaico Ecosystem }}\\
+\end{center}
+
+\vspace{60mm}
+\par
+\noindent
+\begin{minipage}[t]{0.04\textwidth}
+~
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+{\large{\bf Relatore:\\
+Montori Federico}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.4\textwidth}\raggedleft
+{\large{\bf Presentata da:\\
+Coppola Marco}}
+\end{minipage}
+\begin{minipage}[t]{0.04\textwidth}
+~
+\end{minipage}
+
+\vspace{30mm}
+
+\begin{center}
+    {\large{\bf \rom{2} Sessione\\
+    Anno Accademico 2023/2024 }}
+\end{center}
+\end{titlepage}
+
+\restoregeometry
+\newpage
+\begin{center}
+    Keywords:
+\end{center}
+
+% https://tex.stackexchange.com/questions/26538/words-scattered-randomly-in-on-coverpage
+\begin{tikzpicture}[overlay,remember picture,shift=(current page.center)]
+\pgfmathsetseed{3}
+
+
+\foreach [count=\count] \word in {IoT, COAP, BLE, Open Source, Raspberry Pi, C++, Python, Docker, Flutter, PHP, Laravel, LED Matrix, Smart Gadget} {
+\node [
+    xshift={(mod(\count,3)-1)*(\paperwidth/4)},
+    yshift={(mod(\count,7)-3)*(\paperwidth/6)},
+    xshift=rand*4cm,
+    yshift=rand*2cm,
+    % rotate=rand*35,
+    % opacity=rnd*0.5+0.125,
+    font=\large] {\word};
+}
+\end{tikzpicture}
+
+\pagenumbering{gobble} 
+\chapter*{Abstract}  
+Mosaico è una piattaforma open-source progettata per facilitare la creazione e la visualizzazione di contenuti personalizzati su matrici LED. A differenza delle soluzioni commerciali, che spesso limitano le possibilità di personalizzazione, Mosaico offre agli utenti la flessibilità di progettare e configurare "widget" su misura per le loro specifiche esigenze. Questi widget consentono la visualizzazione di dati e altri contenuti sotto forma di dashboard personali, offrendo uno strumento versatile per una vasta gamma di applicazioni, dalla visualizzazione di informazioni a funzionalità interattive.
+
+Basato su hardware economico come il Raspberry Pi Zero W, Mosaico impiega uno stack di comunicazione ottimizzato che utilizza COAP per lo scambio efficiente di dati e Bluetooth Low Energy (BLE) per il rilevamento dei dispositivi. La sua architettura modulare permette agli utenti di creare, condividere ed eseguire dinamicamente i contenuti senza la necessità di ricompilazione, favorendo un ambiente collaborativo e supportando l'espansione continua del sistema.
+
+Offrendo una soluzione altamente personalizzabile, aperta e conveniente, Mosaico arricchisce il campo dei display digitali e dei dashboard personali, fornendo una piattaforma scalabile sia per gli appassionati che per gli sviluppatori.
+
+
+
+\chapter*{Abstract}
+Mosaico is an open-source platform designed to facilitate the creation and display of personalized content on LED matrices. Unlike commercial solutions that often restrict customization, Mosaico provides users with the flexibility to design and configure custom "widgets" tailored to their specific needs. These widgets enable the visualization of data and other content in the form of personal dashboards, offering a versatile tool for a range of applications, from information display to interactive features.
+
+Built on affordable hardware like the Raspberry Pi Zero W, Mosaico employs an optimized communication stack utilizing COAP for efficient data exchange and Bluetooth Low Energy (BLE) for device discovery. Its modular architecture allows users to build, share, and dynamically execute content without recompilation, fostering a collaborative environment and supporting continuous system expansion.
+
+By offering a highly customizable, open, and cost-effective solution, Mosaico enhances the field of digital displays and personal dashboards, providing a scalable platform for both hobbyists and developers.
+
+\tableofcontents
+\setcounter{chapter}{0}
+
+\chapter{Introduction}
+\setcounter{page}{1}
+\pagestyle{plain}
+\pagenumbering{arabic}
+\raggedbottom
+\input{tesi/chapters/1/introduction}
+
+\chapter{State of the art}
+\input{tesi/chapters/2/state-of-the-art}
+
+\chapter{Objectives}
+\input{tesi/chapters/3/objectives}
+
+\chapter{Project architecture}
+\input{tesi/chapters/4/project-architecture}
+
+\chapter{The Hardware}
+\input{tesi/chapters/5/the-hardware}
+
+\chapter{The Software}
+\input{tesi/chapters/6/the-software}
+    
+\chapter{The Client}
+\input{tesi/chapters/7/the-client}
+
+\chapter{The Cloud}
+\input{tesi/chapters/8/the-cloud}
+
+\chapter{Testing and deployment}
+\input{tesi/chapters/9/testing-and-deployment}
+
+\chapter{Conclusion}
+\input{tesi/chapters/10/conclusion}
+
+
+
+\renewcommand{\bibsection}{}
+\chapter*{Bibliographical references}
+\bibliography{tesi/refs}
+\newpage
+
+\newpage~\newpage
+\chapter*{Acknowledgements}
+\input{tesi/aknowledgements}
+
+\end{document}
+
+
+
+
+\chapter{Introduction}
+\input{tesi/chapters/1.0}
+
+\chapter{State of the Art}
+\input{tesi/chapters/0}
+
+
+
+
+\pagestyle{plain}
+
+
+
+
+\section{Objectives}
+\input{tesi/chapters/1.2}
+
+\section{Hardware components}
+\input{tesi/chapters/1.3}
+
+\section{Widgets}
+\input{tesi/chapters/1.4}
+
+
+\chapter{Project Architecture}
+\input{tesi/chapters/2.0}
+
+\section{Software}
+\input{tesi/chapters/2.1}
+
+\newpage
+\section{Client}
+
+\input{tesi/chapters/2.2}
+
+\section{Web}
+\input{tesi/chapters/2.3}
+
+\section{Simulator}
+\input{tesi/chapters/2.4}
+
+\chapter{Networking}
+\input{tesi/chapters/3.0}
+
+\chapter{Programming with AI}
+
+\chapter{Feedback}
+
+
+\renewcommand{\appendixtocname}{Appendici}
+\renewcommand{\appendixpagename}{Appendici}
+% \csname @openrightfalse\endcsname
+\pagenumbering{gobble}
+\begin{appendices}
+\chapter{Appendice 1}
+\label{Appendice:A}
+Probabilmente ci sono un sacco di package non utilizzati ma così funziona tutto quindi non ho indagato oltre.
+
+Inoltre su internet c'è un sacco di documentazione se ti servisse.
+\chapter{Appendice B}
+\label{Appendice:B}
+Appendice B se serve
+
+\chapter{Embed di interi PDF}
+\label{Appendice:C}
+Se ti serve puoi fare embed di PDF interi con pdfpage, scegliendo anche le pagine (o mettendo - se le vuoi tutte):
+
+\includepdf[pages=1]{pdf/sample.pdf}
+\end{appendices}
+\end{comment}
+

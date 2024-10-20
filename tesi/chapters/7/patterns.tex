@@ -1,0 +1,87 @@
+In the mobile application development of Mosaico, the \textbf{BLoC (Business Logic Component)} design pattern was utilized to manage and maintain the app's state in a scalable and organized manner. The separation of concerns provided by BLoC ensures that the UI reacts to changes in the app's state efficiently, promoting cleaner, testable, and maintainable code.
+
+BLoC acts as the intermediary between the UI and the business logic of the application, where each BLoC listens to \textbf{events} and emits corresponding \textbf{states}. This makes it ideal for applications where user interactions and changes in data need to be reflected dynamically across different parts of the UI.
+
+\subsection{BLoC for Installed Widgets Feature}
+
+An excellent example of BLoC in action can be seen in the \textbf{Installed Widgets Page}. This page showcases widgets that users have installed on their LED matrix devices. Using a combination of \textbf{BlocListeners} and \textbf{BlocBuilders}, the UI dynamically updates based on external events such as matrix connections or widget store interactions.
+
+\begin{minted}{dart}
+return MultiBlocListener(
+  listeners: [
+    BlocListener<MatrixDeviceBloc, MatrixDeviceState>(
+      listener: (context, state) {
+        // Only refresh installed widgets if connected to a new matrix
+        if (state is MatrixDeviceConnectedState && state.newConnection) {
+          context.read<MosaicoInstalledWidgetsBloc>()
+              .add(LoadInstalledWidgetsEvent());
+        }
+      },
+    ),
+    BlocListener<MosaicoStoreBloc, MosaicoStoreState>(
+      listener: (context, state) {
+        // Refresh when new widgets are available from the store
+        if (state is MosaicoStoreLoadedState) {
+          context.read<MosaicoInstalledWidgetsBloc>()
+              .add(LoadInstalledWidgetsEvent());
+        }
+      },
+    ),
+  ],
+  child: BlocBuilder<MosaicoInstalledWidgetsBloc, MosaicoInstalledWidgetsState>(
+    builder: (context, state) {
+          // Handle different states (Loading, Loaded, Error)
+          // and provide the appropriate UI response.
+          
+          // Loading
+          if (state is MosaicoInstalledWidgetsLoading) {
+            return Center(child: Center(child: LoadingMatrix()));
+          }
+
+          // Loaded
+          if (state is MosaicoInstalledWidgetsLoaded) {
+           if (state.installedWidgets.isEmpty) {
+              return const EmptyPlaceholder(
+                  hintText: "No widgets? Install some from the store!");
+            }
+            // Show installed widgets tiles
+          }
+
+          // Error
+          if (state is MosaicoInstalledWidgetsError) {
+            return EmptyPlaceholder(
+              hintText: state.message,
+              onRetry: () {
+                context
+                    .read<MosaicoInstalledWidgetsBloc>()
+                    .add(LoadInstalledWidgetsEvent());
+              },
+            );
+          }
+
+          // Not connected?
+          return const EmptyPlaceholder(
+              hintText: "Connect to matrix to see installed widgets");
+    },
+  ),
+);
+\end{minted}
+
+In this code, the \textbf{InstalledWidgetsPage} listens for events from multiple BLoCs:
+
+\begin{itemize}
+    \item \textbf{MatrixDeviceBloc} triggers updates when a new connection is made to an LED matrix device.
+    \item \textbf{MosaicoStoreBloc} listens for changes in the widget store, refreshing the installed widgets list when new widgets are available for installation.
+\end{itemize}
+
+This dynamic reaction between BLoCs allows different parts of the app to remain in sync, minimizing redundant requests and ensuring that data is updated only when necessary.
+
+\subsection{BLoC for Widget Store Interactions}
+
+In the \textbf{Mosaico Store}, when a user installs a new widget, the \textbf{MosaicoStoreBloc} processes this event by calling the appropriate repository to handle the widget installation. Once completed, the store emits an updated state that is listened to by other components, like the \textbf{Installed Widgets Page}, so the newly installed widget appears without additional user action.
+
+This interaction emphasizes the power of BLoC to coordinate state changes across different sections of the app. When a new widget is installed, the state is updated across all relevant UI components in real-time.
+
+By employing the BLoC pattern, the app benefits from a well-structured and responsive design where state changes in one area, such as the widget store, can immediately reflect in another, like the list of installed widgets. This approach reduces unnecessary API calls and ensures the app provides an efficient user experience.
+
+This section highlights the practical advantages of the BLoC pattern, reinforcing its role in handling complex state management tasks in a clean and modular way.

@@ -1,0 +1,18 @@
+One of the essential features of the application is the automatic discovery mechanism, enabling seamless connectivity to a matrix device without requiring complex setup or manual configuration. The goal is to ensure that the application can autonomously identify and connect to any available matrix nearby.
+
+Communication with the matrix device is handled through CoAP. However, in order to initiate this communication, the application must first obtain the IP address of the Raspberry Pi hosting the matrix. To address this challenge, a BLE GATT server is set up alongside the CoAP server. The GATT server exposes a service named \textit{Mosaico}, identified by a constant UUID, which the application can use to recognize the presence of a matrix. A simple BLE scan allows the application to detect this service and establish a connection.
+
+The following algorithm outlines the process for automatically discovering and connecting to a matrix:
+
+\begin{algorithm} \caption{Device discovery}\label{alg
+} \begin{algorithmic} \Ensure Returns the matrix IP if successfully pinged, or \texttt{null} if all attempts fail
+
+\State $prefs \gets \text{get preferences instance}$ \State $lastKnownMatrixIp \gets \text{get stored value from prefs}$ \If{$lastKnownMatrixIp \neq null$ \textbf{and} \texttt{pingMatrix}($lastKnownMatrixIp$)} \State \Return $lastKnownMatrixIp$ \EndIf
+
+\If{\texttt{not} BLEDeviceConnected()} \State \texttt{searchAndConnectBleDevice()} \Comment{Attempt BLE connection} \EndIf
+
+\State \texttt{ensureBleDeviceConnected()} \State $ipFromBle \gets \texttt{matrixBleService.getMatrixIp()}$ \If{$ipFromBle \neq null$ \textbf{and} \texttt{pingMatrix}($ipFromBle$)} \State \texttt{prefs.setString('matrixIp', ipFromBle)} \State \Return $ipFromBle$ \EndIf
+
+\State \Return \texttt{null} \end{algorithmic} \end{algorithm}
+
+If the automatic discovery process is unsuccessful, users can manually set the matrix IP address via the \textit{Set Manual Matrix Address} option in the device control panel, allowing them to connect to the matrix manually.

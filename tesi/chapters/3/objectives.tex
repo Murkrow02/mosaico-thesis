@@ -1,0 +1,82 @@
+
+This project is aimed at building three major components, each with its own specific requirements
+and constraints:
+
+\section{Mobile app}
+
+The end-user interface for discovering new widgets,
+installing them, displaying them on the matrix device, controlling the
+matrix, and checking its status.
+
+\begin{itemize}
+    \item \textbf{Ease of use}: The app must be intuitive, visually appealing,
+        and easy to navigate.
+
+    \item \textbf{Performance}: It should be fast, responsive, and reactive to
+        user inputs, providing a seamless experience.
+
+    \item \textbf{Automatic Device Discovery}: The app should automatically discover
+        and pair with the matrix device to simplify the user experience.
+
+    \item \textbf{Caching Mechanisms}: To minimize resource consumption on the
+        constrained matrix device, the app must implement caching strategies
+        that reduce unnecessary data requests and processing overhead.
+\end{itemize}
+
+
+
+
+
+\section{Raspberry Pi Software}
+
+This is the core software running on the
+Raspberry Pi, responsible for communicating with the mobile app and
+controlling the LED matrix through hardware wiring. \label{software-objectives}
+  
+\begin{itemize}
+    \item \textbf{Efficiency}: The software must be optimized for power and memory
+        usage, given the limited resources of the Raspberry Pi.
+
+    \item \textbf{Modularity and Customizability}: The system should be modular,
+        allowing developers to easily create and add new widgets dynamically, without the need of a re-compilation.
+
+    \item \textbf{Documentation}: Clear and detailed documentation is essential
+        to guide developers who wish to create or modify widgets, ensuring the
+        platform’s extendibility.
+\end{itemize}
+
+
+
+\section{Web Platform}
+This encompasses the REST API for the widget store,
+the project website, documentation, and the developer dashboard for
+uploading and managing widgets.
+
+\begin{itemize}
+    \item \textbf{Deployment}: The web platform should be easily deployable on
+        standard cloud or on-premise environments.
+
+    \item \textbf{Design}: The user interface should be intuitive and visually
+        appealing to enhance user engagement and usability.
+\end{itemize}
+
+
+\section{Additional Features}
+Beyond the core components, I thought of additional features to further enhance
+the project:
+\begin{itemize}
+\item \textbf{Simulator}: Allow users to have a playground to try out things before buying the actual hardware matrix (or to speed up the development of widgets)
+
+\item \textbf{IDE}: A dummy Desktop software to rapidly get into widget development, providing a widget template and an easy connection to the matrix to preview and debug widgets
+  
+	\item \textbf{Cross-Platform Support}: Ensure that the mobile app functions seamlessly
+		across multiple platforms (iOS, Android and Desktop)
+
+	\item \textbf{Extensibility}: The project should be designed in a way that makes
+		it easy to integrate additional features or technologies (e.g., adding
+		support for more IoT protocols or other smart devices).
+
+	\item \textbf{Community Engagement}: Actively engage with the open-source community
+		through forums, contribution guidelines, and issue tracking to foster collaboration
+		and improve the project over time.
+\end{itemize}
